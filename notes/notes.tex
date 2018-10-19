@@ -1,0 +1,95 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[sort, numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{lineno}
+\usepackage{enumitem}
+\usepackage{aas_macros}
+\newcommand{\msun}{M_{\odot}}
+
+%% natbib.sty is loaded by default. However, natbib options can be
+%% provided with \biboptions{...} command. Following options are
+%% valid:
+
+%%   round  -  round parentheses are used (default)
+%%   square -  square brackets are used   [option]
+%%   curly  -  curly braces are used      {option}
+%%   angle  -  angle brackets are used    <option>
+%%   semicolon  -  multiple citations separated by semi-colon
+%%   colon  - same as semicolon, an earlier confusion
+%%   comma  -  separated by commaTheta
+%%   numbers-  selects numerical citations
+%%   super  -  numerical citations as superscripts
+%%   sort   -  sorts multiple citations according to order in ref. list
+%%   sort&compress   -  like sort, but also compresses numerical citations
+%%   compress - compresses without sorting
+%%
+%% \biboptions{comma,round}
+
+% \biboptions{}
+
+\begin{document}
+
+\title{Optimal Statistic Notes}
+\author{Stephen~R.~Taylor}
+\maketitle
+
+The ``optimal statistic'' allows us to test for the significance of correlations in the pulse arrival-time deviations between different pulsars. We are assessing how well these correlations match with the theoretically expected correlations induced by a background of gravitational waves (GWs). These theoretical correlations should be dependent only on the angular separation between pulsar positions on the sky, and are given by ``The Hellings \& Downs Curve'':
+%
+\begin{equation}
+\chi_{ij} = \frac{3}{2}x_{ij}\ln(x_{ij}) - \frac{x_{ij}}{4} + \frac{1}{2} + \frac{1}{2}\delta_{ij},
+\end{equation}
+%
+where $x = (1-\cos\Theta_{ij})/2$, and $\Theta_{ij}$ is the angular separation between pulsar $a$ and $b$.
+
+The background of gravitational waves must be assessed through its statistical properties; unlike an individual signal of two black holes coalescing, we don't know exactly what the signal will look like, but we can constrain its mean, variance, etc. Over many hypothetical realizations of signal and noise, the optimal statistic (OS) has an average value given by:
+%
+\begin{equation}
+\langle \rho \rangle = \left( 2T\sum_{ij} \chi_{ij}^2 \int_{f_l}^{f_h} \frac{P_g^2(f)}{P_i(f)P_j(f)} \right)^{1/2}
+\end{equation}
+%
+where $T$ is the time over which we have observed the pulsars. This implicitly assumes that all pulsars are observed for the same amount of time. The quantities $P_g(f)$, $P_i(f)$ are the power spectra of the GW signal and pulsar noise, respectively. So you can think of the OS as the noise-weighted correlation of the signal between all distinct pairs of pulsars.
+
+For the remainder, I'm going to drop the angle brackets on $\rho$. We're now interested in how moving a fixed number of pulsars around on the sky affects the value of $\rho$. Is it better to have pulsars clumped together, or spread evenly? How does the variation in $\rho$ scale with the number of pulsars? This is what we will investigate. If we assume that all pulsars have exactly the same noise properties, and are observed for the same amount of time, then we can express $\rho$ as
+%
+\begin{equation}
+\rho = \left( \sum_{ij} \chi_{ij}^2  \right)^{1/2} \times y
+\end{equation}
+%
+where $y$ groups together all other factors that don't depend on the pulsar's positions. 
+
+The variance of the OS over different pulsar sky configurations (for a fixed number of pulsars, $N$) is given by
+%
+\begin{eqnarray}
+\mathrm{Var}(\rho) &=& E\left[\rho^2\right]_\mathrm{configs.} - E\left[\rho\right]^2_\mathrm{configs.} \nonumber\\
+&=& \left(E\left[\sum_{ij} \chi_{ij}^2\right]_\mathrm{configs.} - E\left[\left(\sum_{ij} \chi_{ij}^2\right)^{1/2}\right]^2_\mathrm{configs.}\right) \times y^2
+\end{eqnarray}
+%
+where $E[\cdot]_\mathrm{configs}$ indicates the expectation value (i.e. average) of values over all possible sky arrangements of $N$ pulsars. 
+
+There are a couple of integrals we need to perform here, and they can be done analytically for an isotropic distribution of pulsar positions on the sky with an isotropic distribution of GW power. Let's first consider the case of only $2$ pulsars in our array; we only have one distinct pair, so I'll just write the previous equation as
+%
+\begin{equation}
+\mathrm{Var}(\rho) = (E[\chi^2]_\mathrm{configs.} - E[\mathrm{abs}(\chi)]^2_\mathrm{configs.}) \times y^2
+\end{equation}
+
+The first term is the average of the square of the Hellings and Downs curve over all possible angular separations of those two pulsars, while the second term in the squared average value of the absolute Hellings and Downs curve. This is where we now write down the integrals:
+%
+\begin{eqnarray}
+E[\chi^2]_\mathrm{configs.} &=& \int \chi(\Theta)^2 \, p(\Theta)d\Theta, \nonumber\\
+E[\mathrm{abs}(\chi)]_\mathrm{configs.} &=& \int | \chi(\Theta) | \, p(\Theta)d\Theta
+\end{eqnarray}
+%
+where $p(\Theta)$ is the distribution of pulsar angular separations. Now, if we have an isotropic distribution of pulsars on the sky, then that means $\cos\theta \in \mathrm{Uniform}[-1,1]$ and $\phi \in \mathrm{Uniform}[0,2\pi]$, where $(\theta,\phi)$ are the usual spherical polar coordinates. This uniform distribution of pulsar positions actually translates to the following distribution of pulsar angular separations:
+%
+\begin{equation}
+p(\Theta) = \frac{1}{2}\sin\Theta
+\end{equation}
+
+That should be all you need to try to compute the two integrals analytically. A worthwhile hint is that it is easier to change variables to $x$ rather than stay in $\Theta$. The first integral can be down straightforwardly enough; the second has an analytic solution, but you may need to use Mathematica. You can also check your results numerically.
+
+%\bibliographystyle{unsrt}
+%\bibliography{sample.bib}
+
+\end{document}
